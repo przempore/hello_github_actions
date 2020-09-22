@@ -1,6 +1,10 @@
 #include <iostream>
 
+#include "header.hpp"
+
 int main() {
-    std::cout << "Hello, World!" << std::endl;
+
+    std::cout << HelloWorld::print() << std::endl;
+
     return 0;
 }
