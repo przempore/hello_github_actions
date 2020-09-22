@@ -36,7 +36,7 @@ jobs:
       working-directory: ${{runner.workspace}}/build
       shell: bash
       # Execute the build.  You can specify a specific target with "--target <NAME>"
-      run: cmake --build . --config $BUILD_TYPE --target install
+      run: cmake --build . --config $BUILD_TYPE --target install && zip -r release.zip ../install/release
 
     - name: Test
       working-directory: ${{runner.workspace}}/build
@@ -71,6 +71,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ${{runner.workspace}}/install/release/*
-        asset_name: Hello_Github_actionentinel.zip
+        asset_path: ${{runner.workspace}}/build/release.zip
+        asset_name: Hello_Github_action.zip
         asset_content_type: application/zip
