@@ -63,3 +63,14 @@ jobs:
         release_name: Release ${{ github.ref }}
         draft: true
         prerelease: false
+
+    - name: Upload Release Asset
+      id: upload-release-asset 
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ${{runner.workspace}}/install/release/Hello_Github_action.zip
+        asset_name: Hello_Github_actionentinel.zip
+        asset_content_type: application/zip
