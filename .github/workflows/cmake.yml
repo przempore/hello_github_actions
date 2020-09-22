@@ -75,9 +75,9 @@ jobs:
       run: ls -R
       working-directory: ${{runner.workspace}}/
 
-    - name: Zip artifacts
-      run: zip -r Hello_Github_action.zip *
-      working-directory: ${{runner.workspace}}/Hello_Github_action/
+    # - name: Zip artifacts
+    #   run: zip -r Hello_Github_action.zip *
+    #   working-directory: ${{runner.workspace}}/Hello_Github_action/
 
     - name: Upload Release Asset
       id: upload_release_asset 
@@ -86,6 +86,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ${{runner.workspace}}/Hello_Github_action/Hello_Github_action.zip
+        # asset_path: ${{runner.workspace}}/Hello_Github_action/Hello_Github_action.zip
+        asset_path: ${{runner.workspace}}/Hello_Github_action/
         asset_name: Hello_Github_action.zip
         asset_content_type: application/zip
