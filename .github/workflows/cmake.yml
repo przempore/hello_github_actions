@@ -50,7 +50,7 @@ jobs:
       # if: github.event_name == 'push' todo: commented only for testing
       with:
         name: Hello_Github_action
-        path: ${{github.workspace}}/install/release/
+        path: ${{runner.workspace}}/install/release/
 
     - name: Create Release
       id: create_release
