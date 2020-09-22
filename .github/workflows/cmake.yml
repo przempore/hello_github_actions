@@ -67,7 +67,7 @@ jobs:
     - uses: actions/download-artifact@v2
       with:
         name: Hello_Github_action
-        working-directory: ${{runner.workspace}}
+        working-directory: ${{runner.workspace}}/Hello_Github_action.zip
 
     - name: Upload Release Asset
       id: upload-release-asset 
