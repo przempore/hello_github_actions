@@ -54,6 +54,7 @@ jobs:
 
   release:
     runs-on: ubuntu-latest
+    needs: build
 
     steps:
     - name: Create Release
@@ -68,24 +69,25 @@ jobs:
         draft: true
         prerelease: false
 
-    - name: Display structure of downloaded files
-      run: ls -R
-      working-directory: ${{runner.workspace}}/
+  publish:
+    runs-on: ubuntu-latest
+    needs: build
 
+    steps:
     - name: Downlaod build artifacts
       id: download_build_artifacts
       uses: actions/download-artifact@v2
       with:
         name: Hello_Github_action
-        path: ${{runner.workspace}}/Hello_Github_action/
+        path: ./
 
     - name: Display structure of downloaded files
       run: ls -R
-      working-directory: ${{runner.workspace}}/
+      working-directory: ./
 
     - name: Zip artifacts
-      run: zip -r Hello_Github_action.zip *
-      working-directory: ${{runner.workspace}}/Hello_Github_action/
+      run: zip -r Hello_Github_action.zip Hello_Github_action
+      working-directory: ./
 
     - name: Upload Release Asset
       id: upload_release_asset 
