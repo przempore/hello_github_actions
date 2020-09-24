@@ -106,10 +106,6 @@ jobs:
       run: ls -R
       working-directory: ./
 
-    # - name: Zip artifacts
-    #   run: zip -r Hello_Github_action.zip hello_github_action
-    #   working-directory: ./
-
     - name: Zip artifacts
       shell: cmake -P {0}
       run: |
@@ -122,7 +118,11 @@ jobs:
         endif()
       working-directory: ./
 
-    - name: Display structure of downloaded files
+    - name: Display structure of runner.workspace directory
+      run: ls -R
+      working-directory: ${{runner.workspace}}/
+
+    - name: Display structure of ./ directory
       run: ls -R
       working-directory: ./
 
