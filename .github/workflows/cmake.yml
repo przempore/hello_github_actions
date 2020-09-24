@@ -103,6 +103,10 @@ jobs:
         endif()
       working-directory: ./
 
+    - name: Display structure of downloaded files
+      run: ls -R
+      working-directory: ./
+
     - name: Upload Release Asset
       id: upload_release_asset 
       uses: actions/upload-release-asset@v1
