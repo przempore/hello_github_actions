@@ -114,6 +114,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ${{runner.workspace}}/Sentinel/Sentinel.zip
+        asset_path: ${{runner.workspace}}/Sentinel.zip
         asset_name: Sentinel.zip
         asset_content_type: application/zip
