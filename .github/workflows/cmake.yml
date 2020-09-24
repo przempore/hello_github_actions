@@ -96,7 +96,7 @@ jobs:
       uses: actions/download-artifact@v1
       with:
         name: upload_url
-        path: ./artifacts
+        path: ./artifacts/
     - id: set_upload_url
       run: |
         upload_url=`cat ./artifacts/upload_url`
