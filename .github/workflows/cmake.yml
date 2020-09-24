@@ -136,3 +136,4 @@ jobs:
         asset_path: ./Sentinel.zip
         asset_name: Sentinel.zip
         asset_content_type: application/zip
+      working-directory: ./
