@@ -96,7 +96,7 @@ jobs:
       uses: actions/download-artifact@v1
       with:
         name: upload_url
-        path: ./artifacts/
+        path: ./artifacts/sentinel
     - id: set_upload_url
       run: |
         upload_url=`cat ./artifacts/upload_url`
@@ -110,7 +110,7 @@ jobs:
       shell: cmake -P {0}
       run: |
         execute_process(
-          COMMAND cmake -E tar "cfv" "Sentinel.zip" --format=zip artifacts
+          COMMAND cmake -E tar "cfv" "Sentinel.zip" --format=zip artifacts/sentinel
           RESULT_VARIABLE result
         )
         if (NOT result EQUAL 0)
@@ -136,4 +136,3 @@ jobs:
         asset_path: ./Sentinel.zip
         asset_name: Sentinel.zip
         asset_content_type: application/zip
-      working-directory: ./
