@@ -55,6 +55,7 @@ jobs:
   release:
     runs-on: ubuntu-latest
     needs: build
+    if: github.event_name == 'push'
 
     steps:
     - name: Create Release
@@ -72,6 +73,7 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     needs: build
+    if: github.event_name == 'push'
 
     steps:
     - name: Downlaod build artifacts
@@ -86,7 +88,7 @@ jobs:
       working-directory: ./
 
     - name: Zip artifacts
-      run: zip -r Hello_Github_action.zip Hello_Github_action
+      run: zip -r Hello_Github_action.zip hello_github_action
       working-directory: ./
 
     - name: Upload Release Asset
