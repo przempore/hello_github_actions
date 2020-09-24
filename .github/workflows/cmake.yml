@@ -87,8 +87,20 @@ jobs:
       run: ls -R
       working-directory: ./
 
+    # - name: Zip artifacts
+    #   run: zip -r Hello_Github_action.zip hello_github_action
+    #   working-directory: ./
+
     - name: Zip artifacts
-      run: zip -r Hello_Github_action.zip hello_github_action
+      shell: cmake -P {0}
+      run: |
+        execute_process(
+          COMMAND ${{ steps.cmake_and_ninja.outputs.cmake_dir }}/cmake -E tar "cfv" "Sentinel.zip" --format=zip ./hello_github_action/*
+          RESULT_VARIABLE result
+        )
+        if (NOT result EQUAL 0)
+          message(FATAL_ERROR "Zip artifacts failed!")
+        endif()
       working-directory: ./
 
     - name: Upload Release Asset
@@ -98,6 +110,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ${{runner.workspace}}/Hello_Github_action/Hello_Github_action.zip
-        asset_name: Hello_Github_action.zip
+        asset_path: ${{runner.workspace}}/Sentinel/Sentinel.zip
+        asset_name: Sentinel.zip
         asset_content_type: application/zip
