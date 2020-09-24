@@ -47,7 +47,7 @@ jobs:
 
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v2
-      # if: github.event_name == 'push' todo: commented only for testing
+      if: github.event_name == 'push'
       with:
         name: Hello_Github_action
         path: ${{runner.workspace}}/install/release/
@@ -61,7 +61,7 @@ jobs:
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
-      # if: github.event_name == 'push' todo: commented only for testing
+      if: github.event_name == 'push'
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
@@ -73,6 +73,7 @@ jobs:
     - name: Store Release url
       run: |
         echo "${{ steps.create_release.outputs.upload_url }}" > ./upload_url
+
     - uses: actions/upload-artifact@v1
       with:
         path: ./upload_url
