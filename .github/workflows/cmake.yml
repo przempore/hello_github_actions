@@ -17,7 +17,7 @@ jobs:
       with:
         args: install postgresql12
         cached: ${{ steps.cache-postgresql.outputs.cache-hit }}
-        dir: "C:/Program Files/PostgreSQL/"
+        dir: ${{ github.workspace }}/PostgreSQL
 
     - name: Cache PostgreSQL
       uses: actions/cache@v2
@@ -27,13 +27,12 @@ jobs:
         key: cache-postgresql-${{ env.PG_VERSION }}
 
     - name: Setup PostgreSQL
+      if: steps.cache-postgresql.outputs.cache-hit != 'true'
       shell: bash
       run: |
         "C:/Program Files/PostgreSQL/12/bin/initdb.exe" -D pgsql/PGDATA -E UTF8 -U postgres
         "C:/Program Files/PostgreSQL/12/bin/pg_ctl.exe" -D pgsql/PGDATA -l logfile -o "-c max_prepared_transactions=10" start
         "C:/Program Files/PostgreSQL/12/bin/psql.exe" -U postgres -c "CREATE ROLE sentinel SUPERUSER LOGIN PASSWORD '123456'"
-      with:
-        cached: ${{ steps.cache-postgresql.outputs.cache-hit }}
 
   build:
     # The CMake configure and build commands are platform agnostic and should work equally
