@@ -17,13 +17,11 @@ jobs:
         args: install postgresql12
     
     - name: Setup PostgreSQL
-      shell: powershell 
+      shell: bash
       run: |
-        cmd /c '"C:\Program Files\PostgreSQL\12\bin\initdb.exe" -D pgsql/PGDATA -E UTF8 -U postgres'
-
-        cmd /c '"C:\Program Files\PostgreSQL\12\bin\pg_ctl.exe" -D pgsql/PGDATA -l logfile -o '-c max_prepared_transactions=10' start'
-          
-        cmd /c '"C:\Program Files\PostgreSQL\12\bin\psql.exe" -U postgres -c "CREATE ROLE sentinel SUPERUSER LOGIN PASSWORD '123456'"'
+        "C:/Program Files/PostgreSQL/12/bin/initdb.exe" -D pgsql/PGDATA -E UTF8 -U postgres
+        "C:/Program Files/PostgreSQL/12/bin/pg_ctl.exe" -D pgsql/PGDATA -l logfile -o "-c max_prepared_transactions=10" start
+        "C:/Program Files/PostgreSQL/12/bin/psql.exe" -U postgres -c "CREATE ROLE sentinel SUPERUSER LOGIN PASSWORD '123456'"
 
   build:
     # The CMake configure and build commands are platform agnostic and should work equally
