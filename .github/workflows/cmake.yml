@@ -23,7 +23,7 @@ jobs:
       uses: actions/cache@v2
       id: cache-postgresql
       with:
-        path: ${{ github.workspace }}/PostgreSQL
+        path: C:/Program Files/PostgreSQL
         key: cache-postgresql-${{ env.PG_VERSION }}
 
     - name: Setup PostgreSQL
