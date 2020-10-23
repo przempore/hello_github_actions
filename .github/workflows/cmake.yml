@@ -21,7 +21,7 @@ jobs:
       run: |
         cmd /c "'C:\Program Files\PostgreSQL\12\bin\pg_ctl.exe' -D pgsql/PGDATA -l logfile -o '-c max_prepared_transactions=10' start"
           
-        cmd /c "'C:\Program Files\PostgreSQL\12\bin\psql.exe' -U postgres -c "CREATE ROLE sentinel SUPERUSER LOGIN PASSWORD '123456'""
+        cmd /c "'C:\Program Files\PostgreSQL\12\bin\psql.exe' -U postgres -c "CREATE ROLE sentinel SUPERUSER LOGIN PASSWORD '123456'"
 
   build:
     # The CMake configure and build commands are platform agnostic and should work equally
