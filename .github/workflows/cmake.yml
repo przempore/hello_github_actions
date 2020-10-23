@@ -7,6 +7,24 @@ env:
   BUILD_TYPE: Release
 
 jobs:
+  download_postgresql:
+    runs-on: windows-latest
+
+    steps:
+    - name: Install PostgreSQL (Windows)
+      uses: crazy-max/ghaction-chocolatey@v1
+      with:
+        args: install postgresql12
+    
+    - name: Setup PostgreSQL
+      shell: cmd
+      run: |
+        # Start PostgreSQL
+        cmd /c "C:\Program Files\PostgreSQL\12\bin\pg_ctl.exe" -D pgsql/PGDATA -l logfile -o '-c max_prepared_transactions=10' start
+          
+        # Configure test account
+        cmd /c "C:\Program Files\PostgreSQL\12\bin\psql.exe" -U postgres -c "CREATE ROLE sentinel SUPERUSER LOGIN PASSWORD '123456'"
+
   build:
     # The CMake configure and build commands are platform agnostic and should work equally
     # well on Windows or Mac.  You can convert this to a matrix build if you need
