@@ -17,7 +17,7 @@ jobs:
       with:
         args: install postgresql12
         cached: ${{ steps.cache-postgresql.outputs.cache-hit }}
-        dir: ${{ github.workspace }}/PostgreSQL
+        dir: C:/Program Files/PostgreSQL
 
     - name: Cache PostgreSQL
       uses: actions/cache@v2
