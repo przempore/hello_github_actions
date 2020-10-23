@@ -5,6 +5,7 @@ on: [push]
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
+  PG_VERSION: 12
 
 jobs:
   download_postgresql:
@@ -15,13 +16,24 @@ jobs:
       uses: crazy-max/ghaction-chocolatey@v1
       with:
         args: install postgresql12
-    
+        cached: ${{ steps.cache-postgresql.outputs.cache-hit }}
+        dir: "C:/Program Files/PostgreSQL/"
+
+    - name: Cache PostgreSQL
+      uses: actions/cache@v2
+      id: cache-postgresql
+      with:
+        path: ${{ github.workspace }}/PostgreSQL
+        key: cache-postgresql-${{ env.PG_VERSION }}
+
     - name: Setup PostgreSQL
       shell: bash
       run: |
         "C:/Program Files/PostgreSQL/12/bin/initdb.exe" -D pgsql/PGDATA -E UTF8 -U postgres
         "C:/Program Files/PostgreSQL/12/bin/pg_ctl.exe" -D pgsql/PGDATA -l logfile -o "-c max_prepared_transactions=10" start
         "C:/Program Files/PostgreSQL/12/bin/psql.exe" -U postgres -c "CREATE ROLE sentinel SUPERUSER LOGIN PASSWORD '123456'"
+      with:
+        cached: ${{ steps.cache-postgresql.outputs.cache-hit }}
 
   build:
     # The CMake configure and build commands are platform agnostic and should work equally
