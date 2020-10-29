@@ -19,13 +19,12 @@ jobs:
     - name: play with branch names
       run: |
         branch_name=`echo ${{github.head_ref}} | sed 's/_/-/g'`
-        echo "branch name = $branch_name"
 
         if [[ -n $branch_name ]]; then
           branch_name=`echo ${{github.ref}} | sed 's/refs\/heads\///g'`
         fi
 
-        echo "github.ref: ${{github.ref}}"
+        echo "branch name = $branch_name"
 
     - uses: actions/checkout@v2
 
