@@ -1,6 +1,6 @@
 name: CMake
 
-on: pull_request
+on: [push, pull_request]
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
@@ -20,6 +20,10 @@ jobs:
       run: |
         branch_name=-`echo ${{github.head_ref}} | sed 's/_/-/g'`
         echo "branch name = $branch_name"
+
+        if [[ -n $branch_name ]]; then
+          branch_name=`echo ${{github.ref}} | sed 's/refs\/heads\//g'`
+        fi
 
         echo "github.ref: ${{github.ref}}"
 
