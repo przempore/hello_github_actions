@@ -22,7 +22,7 @@ jobs:
         echo "branch name = $branch_name"
 
         if [[ -n $branch_name ]]; then
-          branch_name=`echo ${{github.ref}} | sed 's/refs\/heads\//g'`
+          branch_name=`echo ${{github.ref}} | sed 's/refs\/heads\///g'`
         fi
 
         echo "github.ref: ${{github.ref}}"
