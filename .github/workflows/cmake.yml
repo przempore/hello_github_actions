@@ -18,8 +18,8 @@ jobs:
     steps:
     - name: play with branch names
       run: |
-        branch_name=github.head_ref
-        echo 'branch name: $branch_name'
+        branch_name=${{github.head_ref}}
+        echo 'branch name: ${{branch_name}}'
 
     - uses: actions/checkout@v2
 
