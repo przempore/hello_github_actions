@@ -78,11 +78,11 @@ jobs:
 
     - name: Store Release url
       run: |
-        echo "${{ steps.create_release.outputs.upload_url }}" > ./upload_url
+        echo "${{ steps.create_release.outputs.upload_url }}" > ./artifacts/upload_url
 
     - uses: actions/upload-artifact@v1
       with:
-        path: ./upload_url
+        path: ./artifacts/upload_url
         name: upload_url
 
   publish:
