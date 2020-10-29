@@ -24,8 +24,9 @@ jobs:
     - name: Push to ECR
       id: ecr
       shell: bash
-      run:
-        echo '${{ steps.extract_branch.outputs.branch }}'
+      run: |
+        echo '1. branch name: ${{ steps.extract_branch.outputs.branch }}'
+        echo '2. branch name: ${{ github.head_ref }}'
 
     - uses: actions/checkout@v2
 
