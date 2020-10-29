@@ -16,6 +16,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Extract branch name
+      shell: bash
+      run: echo "##[set-output name=branch;]$(echo ${{ github.head_ref }})"
+      id: extract_branch
+
+    - name: Push to ECR
+      id: ecr
+      shell: bash
+      run:
+        echo '${{ steps.extract_branch.outputs.branch }}'
+
     - uses: actions/checkout@v2
 
     - name: Create Build Environment
@@ -56,7 +67,7 @@ jobs:
   release:
     runs-on: ubuntu-latest
     needs: build
-    if: github.event_name == 'push'
+    if: github.event_name == 'push' && github.event_name == 'pull_request'
 
     steps:
     - name: Create Release
@@ -83,7 +94,7 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     needs: build
-    if: github.event_name == 'push'
+    if: github.event_name == 'push' && github.event_name == 'pull_request'
 
     steps:
     - name: Downlaod build artifacts
@@ -138,14 +149,3 @@ jobs:
         asset_path: ./artifacts/Sentinel.zip
         asset_name: Sentinel.zip
         asset_content_type: application/zip
-
-    - name: Extract branch name
-      shell: bash
-      run: echo "##[set-output name=branch;]$(echo ${{ github.head_ref }})"
-      id: extract_branch
-
-    - name: Push to ECR
-      id: ecr
-      shell: bash
-      run:
-        echo '${{ steps.extract_branch.outputs.branch }}'
