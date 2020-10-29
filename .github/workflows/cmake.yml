@@ -8,32 +8,6 @@ env:
   PG_VERSION: 12
 
 jobs:
-  download_postgresql:
-    runs-on: windows-latest
-
-    steps:
-    - name: Install PostgreSQL (Windows)
-      uses: crazy-max/ghaction-chocolatey@v1
-      with:
-        args: install postgresql12
-        cached: ${{ steps.cache-postgresql.outputs.cache-hit }}
-        dir: C:/Program Files/PostgreSQL
-
-    - name: Cache PostgreSQL
-      uses: actions/cache@v2
-      id: cache-postgresql
-      with:
-        path: C:/Program Files/PostgreSQL
-        key: cache-postgresql-${{ env.PG_VERSION }}
-
-    - name: Setup PostgreSQL
-      if: steps.cache-postgresql.outputs.cache-hit != 'true'
-      shell: bash
-      run: |
-        "C:/Program Files/PostgreSQL/12/bin/initdb.exe" -D pgsql/PGDATA -E UTF8 -U postgres
-        "C:/Program Files/PostgreSQL/12/bin/pg_ctl.exe" -D pgsql/PGDATA -l logfile -o "-c max_prepared_transactions=10" start
-        "C:/Program Files/PostgreSQL/12/bin/psql.exe" -U postgres -c "CREATE ROLE sentinel SUPERUSER LOGIN PASSWORD '123456'"
-
   build:
     # The CMake configure and build commands are platform agnostic and should work equally
     # well on Windows or Mac.  You can convert this to a matrix build if you need
@@ -164,3 +138,14 @@ jobs:
         asset_path: ./artifacts/Sentinel.zip
         asset_name: Sentinel.zip
         asset_content_type: application/zip
+
+    - name: Extract branch name
+      shell: bash
+      run: echo "##[set-output name=branch;]$(echo ${{ github.head_ref }})"
+      id: extract_branch
+
+    - name: Push to ECR
+      id: ecr
+      shell: bash
+      run:
+        echo '${{ steps.extract_branch.outputs.branch }}'
