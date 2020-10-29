@@ -21,7 +21,7 @@ jobs:
         branch_name=-`echo ${{github.head_ref}} | sed 's/_/-/g'`
         echo "branch name = $branch_name"
 
-        if [[ -n $branch_name ]]; then
+        if [[ -n ${{github.head_ref}} ]]; then
           branch_name=`echo ${{github.ref}} | sed 's/refs\/heads\///g'`
         fi
 
