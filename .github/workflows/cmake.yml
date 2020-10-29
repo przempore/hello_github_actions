@@ -18,7 +18,7 @@ jobs:
     steps:
     - name: play with branch names
       run: |
-        echo "::set-env name=branch_name::$(echo ${{github.head_ref}} | sed 's/_/-/g')"
+        echo "::set-env name=branch_name::$(echo ${{github.head_ref}})"
         echo 'branch name: "${{branch_name}}"'
         sed 
 
