@@ -42,16 +42,15 @@ jobs:
     - uses: actions/checkout@v1
 
     - name: Configure PostgreSQL
-      shell: powershell
       run: |
-        echo $env:PGBIN
-        $env:PGBIN/initdb.exe -D pgsql/PGDATA -E UTF8 -U postgres
+        echo %PGBIN%
+        %PGBIN%/initdb.exe -D pgsql/PGDATA -E UTF8 -U postgres
         
         # Start PostgreSQL
-        $env:PGBIN/pg_ctl.exe -D pgsql/PGDATA -l logfile -o '-c max_prepared_transactions=10' start
+        %PGBIN%/pg_ctl.exe -D pgsql/PGDATA -l logfile -o '-c max_prepared_transactions=10' start
           
         # Configure test account
-        $env:PGBIN/psql.exe -U postgres -c "CREATE ROLE sentinel SUPERUSER LOGIN PASSWORD '123456'"
+        %PGBIN%/psql.exe -U postgres -c "CREATE ROLE sentinel SUPERUSER LOGIN PASSWORD '123456'"
 
     - name: Download Ninja and CMake
       shell: cmake -P {0}
