@@ -42,11 +42,12 @@ jobs:
     - uses: actions/checkout@v1
 
     - name: Configure PostgreSQL
+      if: startsWith(matrix.config.os, 'windows')
       shell: cmd
       run: |
         echo "%PGBIN%"
-        "%PGBIN%"\initdb.exe -D .\pgsql\PGDATA -E UTF8 -U postgres
-        "%PGBIN%"\pg_ctl.exe -D .\pgsql\PGDATA -l logfile -o '-c max_prepared_transactions=10' start
+        set PGPASSWORD=root
+        "%PGBIN%"\pg_ctl.exe -l logfile -o '-c max_prepared_transactions=10' start
         "%PGBIN%"\psql.exe -U postgres -c "CREATE ROLE sentinel SUPERUSER LOGIN PASSWORD '123456'"
 
     - name: Download Ninja and CMake
