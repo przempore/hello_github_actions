@@ -22,21 +22,21 @@ jobs:
             cc: "cl", cxx: "cl",
             environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat"
           }
-        - {
-            name: "Windows Latest MinGW", artifact: "Windows-MinGW.7z",
-            os: windows-latest,
-            cc: "gcc", cxx: "g++"
-          }
-        - {
-            name: "Ubuntu Latest GCC", artifact: "Linux.7z",
-            os: ubuntu-latest,
-            cc: "gcc", cxx: "g++"
-          }
-        - {
-            name: "macOS Latest Clang", artifact: "macOS.7z",
-            os: macos-latest,
-            cc: "clang", cxx: "clang++"
-          }
+        # - {
+        #     name: "Windows Latest MinGW", artifact: "Windows-MinGW.7z",
+        #     os: windows-latest,
+        #     cc: "gcc", cxx: "g++"
+        #   }
+        # - {
+        #     name: "Ubuntu Latest GCC", artifact: "Linux.7z",
+        #     os: ubuntu-latest,
+        #     cc: "gcc", cxx: "g++"
+        #   }
+        # - {
+        #     name: "macOS Latest Clang", artifact: "macOS.7z",
+        #     os: macos-latest,
+        #     cc: "clang", cxx: "clang++"
+        #   }
 
     steps:
     - uses: actions/checkout@v1
@@ -50,6 +50,7 @@ jobs:
         if [[ -z $feature_branch ]]; then
           feature_branch=`echo ${{github.ref}} | sed 's/refs\/heads\///g'`
         fi
+        echo ${{ secrets.GITHUB_TOKEN }}
         curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
              -H "Accept: application/vnd.github.v3.raw" \
              -o create_tables.sql \
