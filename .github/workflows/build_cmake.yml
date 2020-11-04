@@ -85,14 +85,14 @@ jobs:
       run: |
         cat ${{ steps.get_create_tables.outputs.file_path }}
 
-    - name: Configure PostgreSQL
-      if: startsWith(matrix.config.os, 'windows')
-      shell: cmd
-      run: |
-        echo "%PGBIN%"
-        set PGPASSWORD=root
-        "%PGBIN%"\pg_ctl.exe -l logfile -o '-c max_prepared_transactions=10' start
-        "%PGBIN%"\psql.exe -U postgres -c "CREATE ROLE sentinel SUPERUSER LOGIN PASSWORD '123456'"
+    # - name: Configure PostgreSQL
+    #   if: startsWith(matrix.config.os, 'windows')
+    #   shell: cmd
+    #   run: |
+    #     echo "%PGBIN%"
+    #     set PGPASSWORD=root
+    #     "%PGBIN%"\pg_ctl.exe -l logfile -o '-c max_prepared_transactions=10' start
+    #     "%PGBIN%"\psql.exe -U postgres -c "CREATE ROLE sentinel SUPERUSER LOGIN PASSWORD '123456'"
 
     - name: Download Ninja and CMake
       shell: cmake -P {0}
