@@ -41,19 +41,21 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Clone GrandperspectiveGmbH/scanfeld-pylib repo
-      uses: actions/checkout@v2
-      id: clone_pylib
-      shell: bash
+    - name: get branch name
+      id: branch-name
       run: |
         feature_branch=${{ github.head_ref }}
         if [[ -z $feature_branch ]]; then
           feature_branch=`echo ${{github.ref}} | sed 's/refs\/heads\///g' | sed 's/\//\/\//g'`
         fi
         echo ::set-output name=feature_branch::$feature_branch
+
+    - name: Clone GrandperspectiveGmbH/scanfeld-pylib repo
+      uses: actions/checkout@v2
+      shell: bash
       with:
         repository: 'GrandperspectiveGmbH/scanfeld-pylib'
-        ref: ${{ steps.clone_pylib.outputs.feature_branch }}
+        ref: ${{ steps.branch-name.outputs.feature_branch }}
         token: ${{ secrets.GITHUB_TOKEN }}
         path: ./
 
