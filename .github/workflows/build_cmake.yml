@@ -52,35 +52,26 @@ jobs:
         echo content: $feature_branch
         echo ::set-output name=feature_branch::$feature_branch
 
-    - name: Clone GrandperspectiveGmbH/scanfeld-pylib repo
-      uses: actions/checkout@v2
-      with:
-        repository: 'GrandperspectiveGmbH/scanfeld-pylib'
-        ref: ${{ steps.branch_name.outputs.feature_branch }}
-        token: ${{ secrets.GITHUB_TOKEN }}
-        path: ./
+    # - name: Clone GrandperspectiveGmbH/scanfeld-pylib repo
+    #   uses: actions/checkout@v2
+    #   with:
+    #     repository: 'GrandperspectiveGmbH/scanfeld-pylib'
+    #     ref: develop
+    #     token: ${{ secrets.GRANDPERSPECTIVETOKEN }}
+    #     path: ./
 
     - name: Get create_tables.sql file from scanfeld-pylib repo
       id: get_create_tables
       shell: bash
       run: |
-        echo "---------------"
-        cat ./scanfeld-pylib/contents/sentinelpylib/development_tools/db_scripts/create_tables.sql
-        echo "---------------"
-
-
-        feature_branch=${{ github.head_ref }}
-        if [[ -z $feature_branch ]]; then
-          feature_branch=`echo ${{github.ref}} | sed 's/refs\/heads\///g' | sed 's/\//\/\//g'`
-        fi
-        echo content: $feature_branch
-        curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+        echo content: ${{ steps.branch_name.outputs.feature_branch }}
+        curl -H "Authorization: token ${{ secrets.GRANDPERSPECTIVETOKEN }}" \
              -H "Accept: application/vnd.github.v3+json" \
-             -s https://api.github.com/repos/grandperspectivegmbh/scanfeld-pylib/contents/sentinelpylib/development_tools/db_scripts/create_tables.sql\?ref\=$feature_branch \
+             -s https://api.github.com/repos/grandperspectivegmbh/scanfeld-pylib/contents/sentinelpylib/development_tools/db_scripts/create_tables.sql\?ref\=${{ steps.branch_name.outputs.feature_branch }} \
              | py -3 -c "import sys, json; print(json.load(sys.stdin))"
-        curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+        curl -H "Authorization: token ${{ secrets.GRANDPERSPECTIVETOKEN }}" \
              -H "Accept: application/vnd.github.v3+json" \
-             -s https://api.github.com/repos/grandperspectivegmbh/scanfeld-pylib/contents/sentinelpylib/development_tools/db_scripts/create_tables.sql\?ref\=$feature_branch \
+             -s https://api.github.com/repos/grandperspectivegmbh/scanfeld-pylib/contents/sentinelpylib/development_tools/db_scripts/create_tables.sql\?ref\=${{ steps.branch_name.outputs.feature_branch }} \
              | py -3 -c "import sys, json; print(json.load(sys.stdin)['download_url'])" > ./download_url
         echo ./download_url
         cat ./download_url
