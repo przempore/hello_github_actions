@@ -53,7 +53,7 @@ jobs:
         curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
              -H "Accept: application/vnd.github.v3.raw" \
              -o create_tables.sql \
-             -L https://api.github.com/repos/${{ github.repository }}/contents/CMakeLists.txt\?ref\=$feature_branch
+             -L https://api.github.com/repos/przempore/dotfiles/contents/linux/polybar/scripts/rfull\?ref\=$feature_branch
 
         file_path=./create_tables.sql
         echo $file_path
