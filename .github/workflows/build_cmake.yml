@@ -43,10 +43,11 @@ jobs:
 
     - name: Clone GrandperspectiveGmbH/scanfeld-pylib repo
       uses: actions/checkout@v2
-      repository: 'GrandperspectiveGmbH/scanfeld-pylib'
-      ref: ${{ github.head_ref }}
-      token: ${{ secrets.GITHUB_TOKEN }}
-      path: ./
+      with:
+        repository: 'GrandperspectiveGmbH/scanfeld-pylib'
+        ref: ${{ github.head_ref }}
+        token: ${{ secrets.GITHUB_TOKEN }}
+        path: ./
 
     - name: Get create_tables.sql file from scanfeld-pylib repo
       id: get_create_tables
