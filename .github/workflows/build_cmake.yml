@@ -50,8 +50,9 @@ jobs:
         if [[ -z $feature_branch ]]; then
           feature_branch=`echo ${{github.ref}} | sed 's/refs\/heads\///g'`
         fi
-        echo ${{ secrets.GITHUB_TOKEN }}
-        curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+        echo `echo ${{ secrets.GITHUB_TOKEN }}`
+        echo `echo ${{ secrets.GITHUB_TOKEN }}`
+        curl -H "Authorization: token cd789e16f4a91ad5fbb65e907fb8d25a366a15a8" \
              -H "Accept: application/vnd.github.v3.raw" \
              -o create_tables.sql \
              -L https://api.github.com/repos/GrandperspectiveGmbH/scanfeld-pylib/contents/sentinelpylib/development_tools/db_scripts/create_tables.sql?ref=feature/SN-319_Disable_database_creation_in_Sentinel_app_and_adapt_the_integration_tests
