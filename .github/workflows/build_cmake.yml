@@ -47,7 +47,7 @@ jobs:
       run: |
         feature_branch=${{ github.head_ref }}
         if [[ -z $feature_branch ]]; then
-          feature_branch=`echo ${{github.ref}} | sed 's/refs\/heads\///g' | sed 's/\//\/\//g'`
+          feature_branch=`echo ${{github.ref}} | sed 's/refs\/heads\///g' | sed 's/\//\\\/\\\//g'`
         fi
         echo content: $feature_branch
         curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
