@@ -53,6 +53,10 @@ jobs:
         curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
              -H "Accept: application/vnd.github.v3+json" \
              -s https://api.github.com/repos/GrandperspectiveGmbH/scanfeld-pylib/contents/sentinelpylib/development_tools/db_scripts/create_tables.sql\?ref\=$feature_branch \
+             | py -3 -c "import sys, json; print(json.load(sys.stdin))"
+        curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+             -H "Accept: application/vnd.github.v3+json" \
+             -s https://api.github.com/repos/GrandperspectiveGmbH/scanfeld-pylib/contents/sentinelpylib/development_tools/db_scripts/create_tables.sql\?ref\=$feature_branch \
              | py -3 -c "import sys, json; print(json.load(sys.stdin)['download_url'])" > ./download_url
         echo ./download_url
         cat ./download_url
