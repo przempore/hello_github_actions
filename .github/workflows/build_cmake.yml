@@ -52,7 +52,6 @@ jobs:
 
     - name: Clone GrandperspectiveGmbH/scanfeld-pylib repo
       uses: actions/checkout@v2
-      shell: bash
       with:
         repository: 'GrandperspectiveGmbH/scanfeld-pylib'
         ref: ${{ steps.branch-name.outputs.feature_branch }}
