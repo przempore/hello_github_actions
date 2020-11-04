@@ -41,6 +41,30 @@ jobs:
     steps:
     - uses: actions/checkout@v1
 
+    - name: Get create_tables.sql file from scanfeld-pylib repo
+      id: get_create_tables
+      shell: bash
+      run: |
+        feature_branch=${{github.head_ref}}
+        echo content: $feature_branch
+        if [[ -z $feature_branch ]]; then
+          feature_branch=`echo ${{github.ref}} | sed 's/refs\/heads\///g'`
+        fi
+        curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+             -H "Accept: application/vnd.github.v3.raw" \
+             -o create_tables.sql \
+             -L https://api.github.com/repos/GrandperspectiveGmbH/scanfeld-pylib/contents/sentinelpylib/development_tools/db_scripts/create_tables.sql?ref=${feature_branch}
+
+        file_path=./create_tables.sql
+        echo $file_path
+        cat $file_path
+        echo ::set-output name=file_path::$file_path
+
+    - name: Print create tables script
+      shell: bash
+      run: |
+        echo ${{ steps.get_create_tables.outputs.file_path }}
+
     - name: Configure PostgreSQL
       if: startsWith(matrix.config.os, 'windows')
       shell: cmd
