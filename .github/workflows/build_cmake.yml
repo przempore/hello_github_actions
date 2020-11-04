@@ -70,22 +70,22 @@ jobs:
              -o create_tables.sql \
              -L https://api.github.com/repos/grandperspectivegmbh/scanfeld-pylib/contents/sentinelpylib/development_tools/db_scripts/create_tables.sql\?ref\=${{ steps.branch_name.outputs.feature_branch }}
 
-        file_path=${PWD}/create_tables.sql
-        echo "---file_path----"
-        echo $file_path
-        echo "--- end file_path----"
+        filename=create_tables.sql
+        echo "---filename----"
+        echo $filename
+        echo "--- end filename----"
 
-        echo "---cat file_path----"
-        cat $file_path
-        echo "---end file_path----"
-        echo ::set-output name=file_path::$file_path
-      working-directory: ./
+        echo "---cat filename----"
+        cat $filename
+        echo "---end filename----"
+        echo ::set-output name=filename::$filename
+      working-directory: ${{ github.workspace }}
 
     - name: Print create tables script
       shell: bash
       run: |
-        echo ${{ steps.get_create_tables.outputs.file_path }}
-        cat ${{ steps.get_create_tables.outputs.file_path }}
+        echo ${{ steps.get_create_tables.outputs.filename }}
+        cat ${{ steps.get_create_tables.outputs.filename }}
 
     # - name: Configure PostgreSQL
     #   if: startsWith(matrix.config.os, 'windows')
@@ -103,6 +103,7 @@ jobs:
         set(ninja_version $ENV{NINJA_VERSION})
 
         message(STATUS "Using host CMake version: ${CMAKE_VERSION}")
+        message(STATUS "$ENV{GITHUB_WORKSPACE}/${{ steps.get_create_tables.outputs.filename }}")
 
         if ("${{ runner.os }}" STREQUAL "Windows")
           set(ninja_suffix "win.zip")
