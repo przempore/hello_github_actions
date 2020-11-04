@@ -104,6 +104,7 @@ jobs:
 
         message(STATUS "Using host CMake version: ${CMAKE_VERSION}")
         message(STATUS "$ENV{GITHUB_WORKSPACE}/${{ steps.get_create_tables.outputs.filename }}")
+        set(FULL_PATH)
         string(REPLACE "\" "/" FULL_PATH "$ENV{GITHUB_WORKSPACE}/${{ steps.get_create_tables.outputs.filename }}")
         message(STATUS "$ENV{GITHUB_WORKSPACE}/${{ steps.get_create_tables.outputs.filename }}")
 
