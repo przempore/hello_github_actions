@@ -46,10 +46,10 @@ jobs:
       shell: bash
       run: |
         feature_branch=${{ github.head_ref }}
-        echo content: $feature_branch
         if [[ -z $feature_branch ]]; then
           feature_branch=`echo ${{github.ref}} | sed 's/refs\/heads\///g'`
         fi
+        echo content: $feature_branch
         curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
              -H "Accept: application/vnd.github.v3.raw" \
              -o create_tables.sql \
