@@ -105,8 +105,8 @@ jobs:
         message(STATUS "Using host CMake version: ${CMAKE_VERSION}")
         message(STATUS "$ENV{GITHUB_WORKSPACE}/${{ steps.get_create_tables.outputs.filename }}")
         set(FULL_PATH)
-        string(REPLACE "\" "/" FULL_PATH "$ENV{GITHUB_WORKSPACE}/${{ steps.get_create_tables.outputs.filename }}")
-        message(STATUS "$ENV{GITHUB_WORKSPACE}/${{ steps.get_create_tables.outputs.filename }}")
+        string(REGEX REPLACE "\\" "\\\\" FULL_PATH "$ENV{GITHUB_WORKSPACE}\${{ steps.get_create_tables.outputs.filename }}")
+        message(STATUS "${FULL_PATH}")
 
         if ("${{ runner.os }}" STREQUAL "Windows")
           set(ninja_suffix "win.zip")
