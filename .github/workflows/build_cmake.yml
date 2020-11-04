@@ -45,7 +45,7 @@ jobs:
       id: get_create_tables
       shell: bash
       run: |
-        feature_branch=feature/SN-319_Disable_database_creation_in_Sentinel_app_and_adapt_the_integration_tests
+        feature_branch=${{ github.head_ref }}
         echo content: $feature_branch
         if [[ -z $feature_branch ]]; then
           feature_branch=`echo ${{github.ref}} | sed 's/refs\/heads\///g'`
@@ -53,7 +53,7 @@ jobs:
         curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
              -H "Accept: application/vnd.github.v3.raw" \
              -o create_tables.sql \
-             -L https://api.github.com/repos/GrandperspectiveGmbH/scanfeld-pylib/contents/sentinelpylib/development_tools/db_scripts/create_tables.sql\?ref\=feature/SN-319_Disable_database_creation_in_Sentinel_app_and_adapt_the_integration_tests
+             -L https://api.github.com/repos/{{ github.repository }}/contents/CMakeLists.txt\?ref\=$feature_branch
 
         file_path=./create_tables.sql
         echo $file_path
