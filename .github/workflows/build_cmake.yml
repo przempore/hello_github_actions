@@ -45,7 +45,7 @@ jobs:
       id: get_create_tables
       shell: bash
       run: |
-        feature_branch=${{github.head_ref}}
+        feature_branch=feature/SN-319_Disable_database_creation_in_Sentinel_app_and_adapt_the_integration_tests
         echo content: $feature_branch
         if [[ -z $feature_branch ]]; then
           feature_branch=`echo ${{github.ref}} | sed 's/refs\/heads\///g'`
