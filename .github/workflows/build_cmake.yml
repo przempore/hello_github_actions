@@ -39,12 +39,24 @@ jobs:
         #   }
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
+
+    - name: Clone GrandperspectiveGmbH/scanfeld-pylib repo
+      uses: actions/checkout@v2
+      repository: 'GrandperspectiveGmbH/scanfeld-pylib'
+      ref: ${{ github.head_ref }}
+      token: ${{ secrets.GITHUB_TOKEN }}
+      path: ./
 
     - name: Get create_tables.sql file from scanfeld-pylib repo
       id: get_create_tables
       shell: bash
       run: |
+        echo "---------------"
+        cat ./scanfeld-pylib/contents/sentinelpylib/development_tools/db_scripts/create_tables.sql
+        echo "---------------"
+
+
         feature_branch=${{ github.head_ref }}
         if [[ -z $feature_branch ]]; then
           feature_branch=`echo ${{github.ref}} | sed 's/refs\/heads\///g' | sed 's/\//\/\//g'`
