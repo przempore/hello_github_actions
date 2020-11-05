@@ -45,13 +45,11 @@ jobs:
       id: branch_name
       shell: bash
       run: |
-        # feature_branch=${{ github.head_ref }}
-        # if [[ -z $feature_branch ]]; then
-        #   feature_branch=`echo ${{github.ref}} | sed 's/refs\/heads\///g'`
-        # fi
-        # echo feature_branch: $feature_branch
-
-        feature_branch=some_not_existing_branch
+        feature_branch=${{ github.head_ref }}
+        if [[ -z $feature_branch ]]; then
+          feature_branch=`echo ${{github.ref}} | sed 's/refs\/heads\///g'`
+        fi
+        echo feature_branch: $feature_branch
 
         function check_branch() {
           curl -H "Authorization: token ${{ secrets.GRANDPERSPECTIVETOKEN }}" \
