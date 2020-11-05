@@ -71,7 +71,7 @@ jobs:
 
         echo feature_branch: $feature_branch
         if [[ $ret -ne 0 ]]; then
-          echo Can't find create_tables.sql file neither in $feature_branch nor in develop branch
+          echo Can\'t find create_tables.sql file neither in $feature_branch nor in develop branch
           exit 1
         fi
 
