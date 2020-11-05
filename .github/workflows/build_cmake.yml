@@ -66,8 +66,7 @@ jobs:
         echo "debug 2 ret: $ret"
         if [[ $ret -ne 0 ]]; then
           echo "debug 3"
-          feature_branch=develop
-          ret=`check_branch $feature_branch`
+          ret=`check_branch develop`
           echo "debug 4 ret: $ret"
         fi
 
@@ -77,7 +76,6 @@ jobs:
           exit 1
         fi
 
-        echo feature_branch: $feature_branch
         echo ::set-output name=feature_branch::$feature_branch
 
 
