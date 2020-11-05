@@ -41,15 +41,17 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: get branch name
+    - name: Get feature branch name to find create_tables.sql file
       id: branch_name
       shell: bash
       run: |
-        feature_branch=${{ github.head_ref }}
-        if [[ -z $feature_branch ]]; then
-          feature_branch=`echo ${{github.ref}} | sed 's/refs\/heads\///g'`
-        fi
-        echo feature_branch: $feature_branch
+        # feature_branch=${{ github.head_ref }}
+        # if [[ -z $feature_branch ]]; then
+        #   feature_branch=`echo ${{github.ref}} | sed 's/refs\/heads\///g'`
+        # fi
+        # echo feature_branch: $feature_branch
+
+        feature_branch=some_not_existing_branch
 
         function check_branch() {
           curl -H "Authorization: token ${{ secrets.GRANDPERSPECTIVETOKEN }}" \
