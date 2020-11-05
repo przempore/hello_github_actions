@@ -60,12 +60,12 @@ jobs:
         }
 
         echo "debug 1"
-        ret=check_branch $feature_branch
+        ret=$(check_branch $feature_branch)
         echo "debug 2 ret: $ret"
         if [[ $ret -ne 0 ]]; then
           echo "debug 3"
           feature_branch = develop
-          ret=check_branch $feature_branch
+          ret=$(check_branch $feature_branch)
           echo "debug 4 ret: $ret"
         fi
 
