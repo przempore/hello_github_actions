@@ -49,31 +49,33 @@ jobs:
         if [[ -z $feature_branch ]]; then
           feature_branch=`echo ${{github.ref}} | sed 's/refs\/heads\///g'`
         fi
-        echo content: $feature_branch
+        echo feature_branch: $feature_branch
 
         function check_branch() {
           curl -H "Authorization: token ${{ secrets.GRANDPERSPECTIVETOKEN }}" \
                -H "Accept: application/vnd.github.v3+json" \
                -s https://api.github.com/repos/GrandperspectiveGmbH/scanfeld-pylib/contents/sentinelpylib/development_tools/db_scripts/create_tables.sql\?ref\=$1 \
                 | python -c "import sys, json; json.load(sys.stdin)['download_url']"
-          return $?
+          echo $?
         }
 
         echo "debug 1"
-        ret=$(check_branch $feature_branch)
+        ret=`check_branch $feature_branch`
         echo "debug 2 ret: $ret"
         if [[ $ret -ne 0 ]]; then
           echo "debug 3"
           feature_branch = develop
-          ret=$(check_branch $feature_branch)
+          ret=`check_branch $feature_branch`
           echo "debug 4 ret: $ret"
         fi
 
+        echo feature_branch: $feature_branch
         if [[ $ret -ne 0 ]]; then
           echo Can't find create_tables.sql file neither in $feature_branch nor in develop branch
           exit 1
         fi
 
+        echo feature_branch: $feature_branch
         echo ::set-output name=feature_branch::$feature_branch
 
 
