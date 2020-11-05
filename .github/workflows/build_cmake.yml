@@ -50,15 +50,32 @@ jobs:
           feature_branch=`echo ${{github.ref}} | sed 's/refs\/heads\///g'`
         fi
         echo content: $feature_branch
+
+        function check_branch() {
+          curl -H "Authorization: token ${{ secrets.GRANDPERSPECTIVETOKEN }}" \
+               -H "Accept: application/vnd.github.v3+json" \
+               -s https://api.github.com/repos/GrandperspectiveGmbH/scanfeld-pylib/contents/sentinelpylib/development_tools/db_scripts/create_tables.sql\?ref\=$1 \
+                | python3 -c "import sys, json; message = print(json.load(sys.stdin)['download_url'])"
+          return $?
+        }
+
+        echo "debug 1"
+        ret = check_branch $feature_branch
+        echo "debug 2 ret: $ret"
+        if [[ $ret -ne 0 ]]; then
+          echo "debug 3"
+          feature_branch = develop
+          ret = check_branch $feature_branch
+          echo "debug 4 ret: $ret"
+        fi
+
+        if [[ $ret -ne 0 ]]; then
+          echo Can't find create_tables.sql file neither in $feature_branch nor in develop branch
+          exit 1
+        fi
+
         echo ::set-output name=feature_branch::$feature_branch
 
-    # - name: Clone GrandperspectiveGmbH/scanfeld-pylib repo
-    #   uses: actions/checkout@v2
-    #   with:
-    #     repository: 'GrandperspectiveGmbH/scanfeld-pylib'
-    #     ref: develop
-    #     token: ${{ secrets.GRANDPERSPECTIVETOKEN }}
-    #     path: ./
 
     - name: Get create_tables.sql file from scanfeld-pylib repo
       id: get_create_tables
@@ -103,7 +120,6 @@ jobs:
         set(ninja_version $ENV{NINJA_VERSION})
 
         message(STATUS "Using host CMake version: ${CMAKE_VERSION}")
-        message(STATUS "$ENV{GITHUB_WORKSPACE}/${{ steps.get_create_tables.outputs.filename }}")
         set(FULL_PATH)
         string(REGEX REPLACE "\\" "\\\\" FULL_PATH "$ENV{GITHUB_WORKSPACE}\${{ steps.get_create_tables.outputs.filename }}")
         message(STATUS "${FULL_PATH}")
