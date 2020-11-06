@@ -47,8 +47,8 @@ jobs:
       shell: cmd
       run: |
         echo "%PGBIN%"
-        set PGPASSWORD=root
-        "%PGBIN%"\pg_ctl.exe -l logfile -o  start
+        rem set PGPASSWORD=root
+        "%PGBIN%"\pg_ctl.exe -D .\data -l logfile start
         rem "%PGBIN%"\psql.exe -U postgres -c "CREATE ROLE sentinel SUPERUSER LOGIN PASSWORD '123456'"
 
     - name: Download Ninja and CMake
