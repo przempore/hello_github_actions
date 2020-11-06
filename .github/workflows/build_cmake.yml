@@ -44,12 +44,13 @@ jobs:
 
     - name: Configure PostgreSQL
       if: startsWith(matrix.config.os, 'windows')
-      shell: cmd
+      shell: powershell
       run: |
         echo "%PGBIN%"
-        rem set PGPASSWORD=root
-        "%PGBIN%"\pg_ctl.exe -D .\data -l logfile start
-        rem "%PGBIN%"\psql.exe -U postgres -c "CREATE ROLE sentinel SUPERUSER LOGIN PASSWORD '123456'"
+        # set PGPASSWORD=root
+        $env:PGBIN\initdb -D .\psql\PGDATA -E UTF8 -U postgres
+        # $env:PGBIN\pg_ctl.exe -D .\psql\PGDATA -l logfile start
+        # $env:PGBIN\psql.exe -U postgres -c "CREATE ROLE sentinel SUPERUSER LOGIN PASSWORD '123456'"
 
     - name: Download Ninja and CMake
       shell: cmake -P {0}
