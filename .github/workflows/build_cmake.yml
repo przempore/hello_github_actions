@@ -48,7 +48,7 @@ jobs:
       run: |
         echo "%PGBIN%"
         # set PGPASSWORD=root
-        $env:PGBIN\initdb -D .\psql\PGDATA -E UTF8 -U postgres
+        $env:PGBIN\initdb.exe -D .\psql\PGDATA -E UTF8 -U postgres
         # $env:PGBIN\pg_ctl.exe -D .\psql\PGDATA -l logfile start
         # $env:PGBIN\psql.exe -U postgres -c "CREATE ROLE sentinel SUPERUSER LOGIN PASSWORD '123456'"
 
