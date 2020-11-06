@@ -41,77 +41,15 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Get feature branch name to find create_tables.sql file
-      id: branch_name
-      shell: bash
+
+    - name: Configure PostgreSQL
+      if: startsWith(matrix.config.os, 'windows')
+      shell: cmd
       run: |
-        feature_branch=${{ github.head_ref }}
-        if [[ -z $feature_branch ]]; then
-          feature_branch=`echo ${{github.ref}} | sed 's/refs\/heads\///g'`
-        fi
-        echo feature_branch: $feature_branch
-
-        function check_branch() {
-          curl -H "Authorization: token ${{ secrets.GRANDPERSPECTIVETOKEN }}" \
-               -H "Accept: application/vnd.github.v3+json" \
-               -s https://api.github.com/repos/GrandperspectiveGmbH/scanfeld-pylib/contents/sentinelpylib/development_tools/db_scripts/create_tables.sql\?ref\=$1 \
-                | python -c "import sys, json; json.load(sys.stdin)['download_url']"
-          echo $?
-        }
-
-        echo "debug 1"
-        ret=`check_branch $feature_branch`
-        echo "debug 2 ret: $ret"
-        if [[ $ret -ne 0 ]]; then
-          echo "debug 3"
-          ret=`check_branch develop`
-          echo "debug 4 ret: $ret"
-        fi
-
-        echo feature_branch: $feature_branch
-        if [[ $ret -ne 0 ]]; then
-          echo Can\'t find create_tables.sql file neither in $feature_branch nor in develop branch
-          exit 1
-        fi
-
-        echo ::set-output name=feature_branch::$feature_branch
-
-
-    - name: Get create_tables.sql file from scanfeld-pylib repo
-      id: get_create_tables
-      shell: bash
-      run: |
-        echo branch: ${{ steps.branch_name.outputs.feature_branch }}
-        curl -H "Authorization: token ${{ secrets.GRANDPERSPECTIVETOKEN }}" \
-             -H "Accept: application/vnd.github.v3.raw" \
-             -o create_tables.sql \
-             -L https://api.github.com/repos/grandperspectivegmbh/scanfeld-pylib/contents/sentinelpylib/development_tools/db_scripts/create_tables.sql\?ref\=${{ steps.branch_name.outputs.feature_branch }}
-
-        filename=create_tables.sql
-        echo "---filename----"
-        echo $filename
-        echo "--- end filename----"
-
-        echo "---cat filename----"
-        cat $filename
-        echo "---end filename----"
-        echo ::set-output name=filename::$filename
-      working-directory: ${{ github.workspace }}
-
-    - name: Print create tables script
-      shell: bash
-      run: |
-        echo ${{ steps.get_create_tables.outputs.filename }}
-        cat ${{ steps.get_create_tables.outputs.filename }}
-
-    # - name: Configure PostgreSQL
-    #   if: startsWith(matrix.config.os, 'windows')
-    #   shell: cmd
-    #   run: |
-    #     echo "%PGBIN%"
-    #     set PGPASSWORD=root
-    #     "%PGBIN%"\pg_ctl.exe -l logfile -o '-c max_prepared_transactions=10' start
-    #     "%PGBIN%"\psql.exe -U postgres -c "CREATE ROLE sentinel SUPERUSER LOGIN PASSWORD '123456'"
+        echo "%PGBIN%"
+        set PGPASSWORD=root
+        "%PGBIN%"\pg_ctl.exe -l logfile -o  start
+        rem "%PGBIN%"\psql.exe -U postgres -c "CREATE ROLE sentinel SUPERUSER LOGIN PASSWORD '123456'"
 
     - name: Download Ninja and CMake
       shell: cmake -P {0}
@@ -120,9 +58,6 @@ jobs:
         set(ninja_version $ENV{NINJA_VERSION})
 
         message(STATUS "Using host CMake version: ${CMAKE_VERSION}")
-        set(FULL_PATH)
-        string(REGEX REPLACE "\\\\" "/" FULL_PATH "$ENV{GITHUB_WORKSPACE}/${{ steps.get_create_tables.outputs.filename }}")
-        message(STATUS "${FULL_PATH}")
 
         if ("${{ runner.os }}" STREQUAL "Windows")
           set(ninja_suffix "win.zip")
