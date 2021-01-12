@@ -7,6 +7,7 @@ env:
   NINJA_VERSION: 1.10.1
   BUILD_TYPE: Release
   CCACHE_VERSION: 3.7.7
+  PGPASSWORD: root
 
 jobs:
   build:
@@ -40,13 +41,6 @@ jobs:
 
     steps:
     # - uses: actions/checkout@v2
-
-    - name: set up environment variables
-      run: |
-        # echo "PGDATA=${{ github.workspace }}\pgsql\PGDATA" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
-        echo "PGPASSWORD=root" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
-
-
 
     - name: pqsql
       run: |
