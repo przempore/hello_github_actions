@@ -47,10 +47,8 @@ jobs:
       shell: powershell
       run: |
         echo "%PGBIN%"
-        # set PGPASSWORD=root
-        $env:PGBIN\initdb.exe -D .\psql\PGDATA -E UTF8 -U postgres
-        # $env:PGBIN\pg_ctl.exe -D .\psql\PGDATA -l logfile start
-        # $env:PGBIN\psql.exe -U postgres -c "CREATE ROLE sentinel SUPERUSER LOGIN PASSWORD '123456'"
+        pg_ctl status
+        initdb -D ${{ github.workspace }}\pgsql\PGDATA -E UTF8 -U postgres
 
     - name: Download Ninja and CMake
       shell: cmake -P {0}
