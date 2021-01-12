@@ -39,24 +39,29 @@ jobs:
         #   }
 
     steps:
-    - uses: actions/checkout@v2
+    # - uses: actions/checkout@v2
 
     - name: set up environment variables
       run: |
         echo "PGDATA=${{ github.workspace }}\pgsql\PGDATA" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
 
 
-    - name: Configure PostgreSQL
-      shell: cmd
+    - name: pqsql
       run: |
-        '%PGBIN%'\pg_ctl.exe status
-        '%PGBIN%'\initdb.exe -E UTF8 -U postgres
-        '%PGBIN%'\pg_ctl.exe start
+        $postgreSqlSvc = Get-Service "postgresql*" 
+        Set-Service $postgreSqlSvc.Name -StartupType manual 
+        $postgreSqlSvc.Start() 
+        try {
+          (Get-Service "postgresql*").Start()
+        } catch  {
+          $_ | select *
+        }
 
-        '%PGBIN%'\psql.exe -U postgres -c "alter role postgres password '123456';"
-
-        '%PGBIN%'\psql.exe -U postgres -c "CREATE ROLE sentinel SUPERUSER LOGIN PASSWORD '123456'"
-
+        & "$env:PGBIN\pg_ctl.exe" status
+        & "$env:PGBIN\initdb.exe" -E UTF8 -U postgres
+        & "$env:PGBIN\pg_ctl.exe" start
+        & "$env:PGBIN\psql.exe" -U postgres -c "alter role postgres password '123456';"
+        & "$env:PGBIN\psql.exe" -U postgres -c "CREATE ROLE sentinel SUPERUSER LOGIN PASSWORD '123456'"
 
 
   #   - name: Download Ninja and CMake
