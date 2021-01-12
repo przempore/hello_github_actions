@@ -59,7 +59,6 @@ jobs:
 
         & "$env:PGBIN\pg_ctl.exe" status
         & "$env:PGBIN\initdb.exe" -E UTF8 -U postgres
-        & "$env:PGBIN\pg_ctl.exe" start
         & "$env:PGBIN\psql.exe" -U postgres -c "alter role postgres password '123456';"
         & "$env:PGBIN\psql.exe" -U postgres -c "CREATE ROLE sentinel SUPERUSER LOGIN PASSWORD '123456'"
 
