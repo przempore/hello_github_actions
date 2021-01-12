@@ -47,10 +47,7 @@ jobs:
       shell: powershell
       run: |
         sc start postgresql-x64-13
-
-        echo $env:PGBIN
-        $env:PGBIN\pg_ctl.exe status
-        initdb -D ${{ github.workspace }}\pgsql\PGDATA -E UTF8 -U postgres
+        sc query postgresql-x64-13
 
     - name: Download Ninja and CMake
       shell: cmake -P {0}
