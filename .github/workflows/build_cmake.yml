@@ -49,9 +49,9 @@ jobs:
     - name: Configure PostgreSQL
       shell: cmd
       run: |
-        %PGBIN%\pg_ctl.exe status
-        %PGBIN%\initdb.exe -E UTF8 -U postgres
-        %PGBIN%\pg_ctl.exe start
+        '%PGBIN%'\pg_ctl.exe status
+        '%PGBIN%'\initdb.exe -E UTF8 -U postgres
+        '%PGBIN%'\pg_ctl.exe start
 
         # Set password for postgres user
         pgsql/bin/psql -U postgres -c "alter role postgres password '123456';"
