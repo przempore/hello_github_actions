@@ -44,7 +44,7 @@ jobs:
     - name: set up environment variables
       run: |
         echo "PGDATA=${{ github.workspace }}\pgsql\PGDATA" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
-        echo "PGPASSWORD=123456" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
+        echo "PGPASSWORD=root" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
 
 
 
