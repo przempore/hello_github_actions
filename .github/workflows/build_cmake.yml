@@ -49,6 +49,9 @@ jobs:
         sc start postgresql-x64-13
         sc query postgresql-x64-13
 
+        pg_ctl status
+        initdb -D ${{ github.workspace }}\pgsql\PGDATA -E UTF8 -U postgres
+
     - name: Download Ninja and CMake
       shell: cmake -P {0}
       run: |
