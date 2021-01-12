@@ -46,8 +46,10 @@ jobs:
       if: startsWith(matrix.config.os, 'windows')
       shell: powershell
       run: |
-        echo "%PGBIN%"
-        pg_ctl status
+        sc start postgresql-x64-13
+
+        echo $env:PGBIN
+        $env:PGBIN\pg_ctl.exe status
         initdb -D ${{ github.workspace }}\pgsql\PGDATA -E UTF8 -U postgres
 
     - name: Download Ninja and CMake
