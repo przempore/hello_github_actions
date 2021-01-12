@@ -44,13 +44,15 @@ jobs:
 
     - name: Configure PostgreSQL
       if: startsWith(matrix.config.os, 'windows')
-      shell: cmd
       run: |
-        "%PGBIN%"\pg_ctl.exe status
-        "%PGBIN%"\initdb -D ${{ github.workspace }}\pgsql\PGDATA -E UTF8 -U postgres
-
-        sc start postgresql-x64-13
-        sc query postgresql-x64-13
+        $postgreSqlSvc = Get-Service "postgresql*" 
+        Set-Service $postgreSqlSvc.Name -StartupType manual 
+        $postgreSqlSvc.Start() 
+        try {
+          (Get-Service "postgresql*").Start()
+        } catch  {
+          $_ | select *
+        }
 
     - name: Download Ninja and CMake
       shell: cmake -P {0}
