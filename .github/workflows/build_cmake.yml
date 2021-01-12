@@ -53,11 +53,9 @@ jobs:
         '%PGBIN%'\initdb.exe -E UTF8 -U postgres
         '%PGBIN%'\pg_ctl.exe start
 
-        # Set password for postgres user
-        pgsql/bin/psql -U postgres -c "alter role postgres password '123456';"
+        '%PGBIN%'\psql.exe -U postgres -c "alter role postgres password '123456';"
 
-        # Configure test account
-        pgsql/bin/psql -U postgres -c "CREATE ROLE sentinel SUPERUSER LOGIN PASSWORD '123456'"
+        '%PGBIN%'\psql.exe -U postgres -c "CREATE ROLE sentinel SUPERUSER LOGIN PASSWORD '123456'"
 
 
 
