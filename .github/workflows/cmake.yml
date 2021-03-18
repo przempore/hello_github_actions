@@ -40,6 +40,7 @@ jobs:
           # https://github.community/t/github-sha-not-the-same-as-the-triggering-commit/18286
           git_hash=${{ github.event.pull_request.head.sha:0:8 }}
         fi
+        echo "git_hash=$git_hash"
         echo "git_hash=$git_hash" >> $GITHUB_ENV
 
         echo "github.ref: ${{github.ref}}"
