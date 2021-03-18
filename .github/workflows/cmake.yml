@@ -47,7 +47,7 @@ jobs:
 
     - name: print git_hash
       run: |
-        echo "env.git_hash: ${env.git_hash}"
+          echo "env.git_hash: ${{ env.git_hash }}"
 
 
     - uses: actions/checkout@v2
