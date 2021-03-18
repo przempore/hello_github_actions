@@ -25,6 +25,22 @@ jobs:
         fi
 
         echo "branch name = $branch_name"
+        
+    - name: set env vars for branch name and git hash
+      run: |
+        feature_branch=`echo ${{github.head_ref}} | sed 's/\//-/g'`
+        if [[ -z $feature_branch ]]; then
+          feature_branch=`echo ${{github.ref}} | sed 's/refs\/heads\///g' | sed 's/\//-/g'`
+        fi
+        feature_branch=${feature_branch,,} # change to lowercase
+        echo "feature_branch=$feature_branch" >> $GITHUB_ENV
+        git_hash=${GITHUB_SHA}
+        if [ "$GITHUB_EVENT_NAME" == "pull_request" ]; then
+          # on PR the GITHUB_SHA contains a temporary hash, for details see:
+          # https://github.community/t/github-sha-not-the-same-as-the-triggering-commit/18286
+          git_hash=${{ github.event.pull_request.head.sha:0:8 }}
+        fi
+        echo "git_hash=$git_hash" >> $GITHUB_ENV
 
     - uses: actions/checkout@v2
 
