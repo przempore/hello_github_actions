@@ -1,0 +1,36 @@
+name: build docker images
+
+on:
+  push:
+    branches:
+      - 'master'
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        persist-credentials: false
+    - name: set env vars for branch name and git hash
+      run: |
+        git_hash=${GITHUB_SHA}
+        feature_branch=`echo ${{github.ref}} | sed 's/refs\/heads\///g' | sed 's/\//-/g'`
+
+        if [ "$GITHUB_EVENT_NAME" == "pull_request" ]; then
+          # on PR the GITHUB_SHA contains a temporary hash, for details see:
+          # https://github.community/t/github-sha-not-the-same-as-the-triggering-commit/18286
+          git_hash=${{ github.event.pull_request.head.sha }}
+          feature_branch=`echo ${{github.head_ref}} | sed 's/\//-/g'`
+        fi
+
+        echo "GIT_SHA=$git_hash" >> $GITHUB_ENV
+
+        feature_branch=${feature_branch,,} # change to lowercase
+        echo "BRANCH_TAG=$feature_branch" >> $GITHUB_ENV
+
+    - name: send "workflow_dispatch.deploy_to_testing" event to configuration repository
+      if: env.feature_branch == 'master'
+      shell: echo "It works!!"
+
