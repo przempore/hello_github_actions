@@ -35,10 +35,5 @@ jobs:
         echo "env.feature_branch: ${{ env.feature_branch }}"
 
     - name: send "workflow_dispatch.deploy_to_testing" event to configuration repository
-      if: env.feature_branch == 'master'
-      run: echo "It works!!"
-
-    - name: send "workflow_dispatch.deploy_to_testing" event to configuration repository
       if: ${{ env.feature_branch }} == 'master'
       run: echo "It works!!"
-
