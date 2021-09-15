@@ -32,5 +32,5 @@ jobs:
 
     - name: send "workflow_dispatch.deploy_to_testing" event to configuration repository
       if: env.feature_branch == 'master'
-      shell: echo "It works!!"
+      run: echo "It works!!"
 
